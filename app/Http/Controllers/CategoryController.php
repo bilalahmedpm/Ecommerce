@@ -39,7 +39,11 @@ class CategoryController extends Controller
         $category=  new Category();
         $category->name = $request->name;
         $category->save();
+<<<<<<< HEAD
         return  redirect()->back()->with('message', 'Record Added Successfully !');
+=======
+        return  redirect()->back()->with('success', 'Record Updated Successfully !');
+>>>>>>> origin/main
     }
 
     /**
@@ -48,11 +52,17 @@ class CategoryController extends Controller
      * @param  \App\Category  $category
      * @return \Illuminate\Http\Response
      */
+<<<<<<< HEAD
     public function show($id)
     {
         $category = Category::find($id);
         $category->delete();
         return  redirect()->back()->with('error', 'Record Deleted Successfully !');
+=======
+    public function show(Category $category)
+    {
+        //
+>>>>>>> origin/main
     }
 
     /**
@@ -77,7 +87,11 @@ class CategoryController extends Controller
     {   $category = Category::find($id);
         $category->name = $request->name;
         $category->update();
+<<<<<<< HEAD
         return  redirect()->back()->with('message', 'Record Updated Successfully !');
+=======
+        return  redirect()->back()->with('success', 'Record Updated Successfully !');
+>>>>>>> origin/main
         //
     }
 
@@ -87,9 +101,15 @@ class CategoryController extends Controller
      * @param  \App\Category  $category
      * @return \Illuminate\Http\Response
      */
+<<<<<<< HEAD
     public function destroy($id)
     {
 
 
+=======
+    public function destroy(Category $category)
+    {
+        //
+>>>>>>> origin/main
     }
 }
