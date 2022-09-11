@@ -1,19 +1,19 @@
 @extends('admin.layouts.include')
 @section('content')
+
     <!-- Main content -->
-    <?php $user = Auth::user();?>
     <section class="content">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-12">
+                    <!-- /.card -->
 
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">Category</h3>
-                            <button style="margin-left: 30px;" class="btn btn-primary btn-sm float-right"
-                                    data-toggle="modal" data-target="#exampleModal">Add New
+                            <h3 class="card-title">SubCategory</h3>
+                            <button class="btn btn-primary btn-sm float-right" data-toggle="modal"
+                                    data-target="#exampleModal">Add New
                             </button>
-
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">
@@ -22,21 +22,18 @@
                                 <tr>
                                     <th>Id</th>
                                     <th>Name</th>
-                                    <th>Image</th>
+                                    <th>Category</th>
                                     <th>Status</th>
                                     <th>Created User</th>
                                     <th>Action</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                @foreach($category as $row)
+                                @foreach($subcategory as $row)
                                     <tr>
                                         <td>{{$row->id}}</td>
-                                        <td>{{$row->name}}</td>
-                                        <td>
-                                            <img style="width:60px; border-radius:20px; " src="{{asset($row->img)}}"
-                                                 alt="">
-                                        </td>
+                                        <td>{{$row->name ?? ''}}</td>
+                                        <td>{{$row->categories->name ?? ''}}</td>
                                         <td>
                                             @if($row->status==0)
                                                 <span class="badge badge-success">Approved</span>
@@ -45,20 +42,20 @@
                                             @endif
                                         </td>
                                         <td>{{$row->user->name}}</td>
-                                        <td><a href="{{route('category.edit' , $row->id)}}" data-toggle="modal"
-                                               data-target="#exampleModal{{$row->id}}" class="btn btn-sm btn-primary"
-                                               data-toggle="tooltip" title="edit">
+                                        <td>
+                                            <a data-toggle="modal" data-target="#exampleModal{{$row->id}}" id="edit"
+                                               class="btn btn-sm btn-primary" data-toggle="tooltip" title="edit">
                                                 <i class="fa fa-pen"></i> Edit
                                             </a>
-                                            <a href="{{route('category.destroy' ,$row->id)}}" id="delete"
-                                               class="btn btn-sm btn-danger" data-toggle="tooltip" title="edit">
+
+                                            <a href="{{route('subcategory.edit',$row->id)}}" id="delete"
+                                               class="btn btn-sm btn-danger" title="edit">
                                                 <i class="fa fa-times"></i> Delete
                                             </a>
-                                            @if($user->role==1 && $row->status==1)
-                                            <a href="{{route('category.edit' ,$row->id)}}" id="delete"
-                                               class="btn btn-sm btn-warning" data-toggle="tooltip" title="edit">
-                                                <i class="fa fa-user"></i> Approve
-                                            </a>
+                                            @if($row->status==1 && Auth::user()->role==1)
+                                                <a href="{{route('subcategory.edit',$row->id)}}" id="delete" class="btn btn-sm btn-success"  title="edit">
+                                                    <i class="fa fa-trash"></i> Approve
+                                                </a>
                                             @endif
                                         </td>
                                     </tr>
@@ -74,33 +71,32 @@
                                                         <span aria-hidden="true">&times;</span>
                                                     </button>
                                                 </div>
-
                                                 <div class="modal-body">
-                                                    <form action="{{route('category.update',$row->id)}}" method="post"
-                                                          enctype="multipart/form-data" data-parsley-validate>
+                                                    <form action="{{route('subcategory.update',$row->id)}}"
+                                                          method="post" enctype="multipart/form-data"
+                                                          data-parsley-validate>
                                                         @method('PUT')
                                                         @csrf
-
                                                         <div class="col-md-12">
                                                             <div class="form-group">
                                                                 <label for="title"><b>Category</b><span
                                                                         class="text-danger">*</span></label>
-                                                                <input type="text" value="{{$row->name}}" name="name"
-                                                                       required placeholder="Category Name"
-                                                                       class="form-control">
+                                                                <select name="category_id" class="form-control select2">
+                                                                    <option>Select Category</option>
+                                                                    @foreach($category as $row1)
+                                                                        <option
+                                                                            value="{{$row1->id}}" {{ ( $row1->id == $row->category_id) ? 'selected' : '' }}>{{$row1->name}}</option>
+                                                                    @endforeach
+                                                                </select>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-12">
                                                             <div class="form-group">
-                                                                <label for="title"><b>Image</b><span
+                                                                <label for="title"><b>Title</b><span
                                                                         class="text-danger">*</span></label>
-                                                                <input type="file" name="img" class="form-control">
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-12">
-                                                            <div class="form-group">
-                                                                <img style="width:160px;" src="{{asset($row->img)}}"
-                                                                     alt="">
+                                                                <input type="text" value="{{$row->name}}" name="name"
+                                                                       placeholder="Category Title"
+                                                                       class="form-control">
                                                             </div>
                                                         </div>
 
@@ -119,7 +115,9 @@
                                         </div>
 
                                     </div>
-                                @endforeach
+                        </div>
+
+                        @endforeach
                         </tbody>
                         </table>
                     </div>
@@ -134,41 +132,43 @@
         <!-- /.container-fluid -->
     </section>
     <!-- /.content -->
-
+    </div>
     <!-- Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
          aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Add Category</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Add New SubCategory</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-
                 <div class="modal-body">
-                    <form action="{{route('category.store')}}" method="post" enctype="multipart/form-data"
+                    <form action="{{route('subcategory.store')}}" method="post" enctype="multipart/form-data"
                           data-parsley-validate>
                         @csrf
-
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label for="title"><b>Category</b><span class="text-danger">*</span></label>
-                                <input type="text" name="name" required placeholder="Category Name"
-                                       class="form-control">
+                                <select name="category_id" class="form-control select2">
+                                    <option>Select Category</option>
+                                    @foreach($category as $row)
+                                        <option value="{{$row->id}}">{{$row->name}}</option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label for="title"><b>Image</b><span class="text-danger">*</span></label>
-                                <input type="file" name="img" class="form-control">
+                                <label for="title"><b>Title</b><span class="text-danger">*</span></label>
+                                <input type="text" name="name" placeholder="Category Title" class="form-control">
                             </div>
                         </div>
 
                         <div class="col-md-12 pull-right">
                             <div class="form-group">
-                                <button type="submit" class="btn btn-primary btn-block">Submit</button>
+                                <button type="submit" class="btn btn-primary btn-block">Save</button>
                             </div>
                         </div>
                     </form>

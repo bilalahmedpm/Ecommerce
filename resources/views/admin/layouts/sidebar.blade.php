@@ -16,18 +16,7 @@
                 <a href="#" class="d-block">{{auth::user()->name}}</a>
             </div>
         </div>
-
-        <!-- SidebarSearch Form -->
-        <div class="form-inline">
-            <div class="input-group" data-widget="sidebar-search">
-                <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
-                <div class="input-group-append">
-                    <button class="btn btn-sidebar">
-                        <i class="fas fa-search fa-fw"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
+<?php $user = Auth::user();?>
 
         <!-- Sidebar Menu -->
         <nav class="mt-2">
@@ -46,24 +35,52 @@
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-copy"></i>
                         <p>
-                            Products
+                            Category
                             <i class="fas fa-angle-left right"></i>
                             {{--                            <span class="badge badge-info right">6</span>--}}
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="{{route('category.index')}}" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Create</p>
+                                <p>Category</p>
                             </a>
                         </li>
+                        @if($user->role==1)
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="{{route('request.category')}}" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>index</p>
+                                <p>Request Category</p>
                             </a>
                         </li>
+                        @endif
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-copy"></i>
+                        <p>
+                            SubCategory
+                            <i class="fas fa-angle-left right"></i>
+                            {{--                            <span class="badge badge-info right">6</span>--}}
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{route('subcategory.index')}}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>SubCategory</p>
+                            </a>
+                        </li>
+                        @if($user->role==1)
+                        <li class="nav-item">
+                            <a href="{{route('request.subcategory')}}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Request SubCategory</p>
+                            </a>
+                        </li>
+                        @endif
                     </ul>
                 </li>
                 <li class="nav-item">
@@ -97,7 +114,7 @@
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#">Admin</a></li>
+                        <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
                         <li class="breadcrumb-item active">Home</li>
                     </ol>
                 </div><!-- /.col -->

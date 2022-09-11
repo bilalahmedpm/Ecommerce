@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CategoryController extends Controller
 {
@@ -14,8 +15,22 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $category = Category::where('status','=',0)->get();
-       return view('admin.category.index',compact('category'));
+        $user = Auth::user();
+        if($user->role==1){
+            $category = Category::where('status','=',0)->get();
+        }
+        else{
+            $category = Category::where('user_id','=',$user->id)->get();
+        }
+        return view('admin.category.index',compact('category'));
+    }
+    public function index2()
+    {
+        $user = Auth::user();
+        if($user->role==1){
+            $category = Category::where('status','=',1)->get();
+        }
+        return view('admin.category.index',compact('category'));
     }
 
     /**
@@ -36,80 +51,64 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
+        $user = Auth::user();
         $category=  new Category();
         $category->name = $request->name;
+        $category->user_id = $user->id;
+        if($user->role==2){
+            $category->status= 1;
+        }
+        if($request->hasfile('img')) {
+
+            $image1 = $request->file('img');
+            $name = time() . 'img' . '.' . $image1->getClientOriginalExtension();
+            $destinationPath = 'img/';
+            $image1->move($destinationPath, $name);
+            $category->img = 'img/' . $name;
+        }
         $category->save();
-<<<<<<< HEAD
         return  redirect()->back()->with('message', 'Record Added Successfully !');
-=======
-        return  redirect()->back()->with('success', 'Record Updated Successfully !');
->>>>>>> origin/main
+
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Category  $category
-     * @return \Illuminate\Http\Response
-     */
-<<<<<<< HEAD
+
     public function show($id)
     {
         $category = Category::find($id);
         $category->delete();
-        return  redirect()->back()->with('error', 'Record Deleted Successfully !');
-=======
-    public function show(Category $category)
-    {
-        //
->>>>>>> origin/main
+        return redirect()->back()->with('error', 'Record Deleted Successfully !');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Category  $category
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Category $category)
+
+    public function edit($id)
     {
-        //
+        $category = Category::find($id);
+        $category->status = 0;
+        $category->save();
+        return redirect()->back()->with('info', 'Record Status Updated Successfully !');
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Category  $category
-     * @return \Illuminate\Http\Response
-     */
+
     public function update(Request $request, $id)
     {   $category = Category::find($id);
         $category->name = $request->name;
+
+        if ($request->hasfile('img')) {
+
+            $image1 = $request->file('img');
+            $name = time() . 'img' . '.' . $image1->getClientOriginalExtension();
+            $destinationPath = 'img/';
+            $image1->move($destinationPath, $name);
+            $category->img = 'img/' . $name;
+        }
         $category->update();
-<<<<<<< HEAD
+
         return  redirect()->back()->with('message', 'Record Updated Successfully !');
-=======
-        return  redirect()->back()->with('success', 'Record Updated Successfully !');
->>>>>>> origin/main
-        //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Category  $category
-     * @return \Illuminate\Http\Response
-     */
-<<<<<<< HEAD
     public function destroy($id)
     {
 
-
-=======
-    public function destroy(Category $category)
-    {
-        //
->>>>>>> origin/main
     }
+
 }
