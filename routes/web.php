@@ -19,8 +19,11 @@ Route::get('/', function () {
 
 Auth::routes();
 
+
 Route::get('/home', 'HomeController@index')->name('home')->middleware('auth');
 Route::resource('category','CategoryController');
 Route::get('/request/category', 'CategoryController@index2')->name('request.category');
 Route::resource('subcategory','SubCatgeoryController');
 Route::get('/request/subcategory', 'SubCatgeoryController@index2')->name('request.subcategory');
+Route::resource('/product','ProductController');
+Route::post('/fetchmaincategory', 'ProductController@fetchmaincategory')->name('fetchmaincategory');
