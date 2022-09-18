@@ -27,3 +27,4 @@ Route::resource('subcategory','SubCatgeoryController');
 Route::get('/request/subcategory', 'SubCatgeoryController@index2')->name('request.subcategory');
 Route::resource('/product','ProductController');
 Route::post('/fetchmaincategory', 'ProductController@fetchmaincategory')->name('fetchmaincategory');
+Route::get('/discount/product', 'ProductController@index2')->name('discount.product');

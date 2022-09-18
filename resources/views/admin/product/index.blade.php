@@ -10,8 +10,11 @@
                     <div class="card">
                         <div class="card-header">
                             <h3 class="card-title">Product</h3>
-                            <a href="{{route('product.create')}}" style="margin-left: 30px;" class="btn btn-primary btn-sm float-right">Add New
-                            </a>
+                            @if(Auth::user()->role==2)
+                                <a href="{{route('product.create')}}" style="margin-left: 30px;"
+                                   class="btn btn-primary btn-sm float-right">Add New
+                                </a>
+                            @endif
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">
@@ -47,16 +50,22 @@
                                                 <span class="badge badge-warning">DActive</span>
                                             @endif
                                         </td>
-                                        <td><a href="{{route('product.edit' , $row->id)}}" data-toggle="modal"
-                                               data-target="#exampleModal{{$row->id}}" class="btn btn-sm btn-primary"
-                                               data-toggle="tooltip" title="edit">
-                                                <i class="fa fa-pen"></i> Edit
-                                            </a>
-                                            <a href="{{route('product.destroy' ,$row->id)}}" id="delete"
-                                               class="btn btn-sm btn-danger" data-toggle="tooltip" title="edit">
-                                                <i class="fa fa-times"></i> Delete
-                                            </a>
-
+                                        <td>
+                                            @if(Auth::user()->role==2)
+                                                <a href="{{route('product.edit' , $row->id)}}"
+                                                   class="btn btn-sm btn-primary"
+                                                   data-toggle="tooltip" title="edit">
+                                                    <i class="fa fa-pen"></i> Edit
+                                                </a>
+                                            @endif
+                                            <form method="post" action="{{route('product.destroy',$row->id)}}">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit"
+                                                        class="btn btn-sm btn-danger">
+                                                    <i class="fa fa-times"></i> Delete
+                                                </button>
+                                            </form>
                                         </td>
                                     </tr>
 
