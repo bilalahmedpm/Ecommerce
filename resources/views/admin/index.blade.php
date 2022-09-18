@@ -3,6 +3,7 @@
 @section('content')
     <!-- Main content -->
     <section class="content">
+        <?php $user = Auth::user(); ?>
         <div class="container-fluid">
             <!-- Small boxes (Stat box) -->
             <div class="row">
@@ -36,6 +37,8 @@
                     </div>
                 </div>
                 <!-- ./col -->
+
+                @if($user->role ==1)
                 <div class="col-lg-3 col-6">
                     <!-- small box -->
                     <div class="small-box bg-warning">
@@ -65,9 +68,10 @@
                         <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
+                @endif
+
                 <div class="col-lg-3 col-6">
                     <!-- small box -->
-
                     <div class="small-box bg-primary">
                         <div class="inner">
                             <h3>{{$data['fproduct']}}</h3>

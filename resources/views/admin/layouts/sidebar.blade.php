@@ -31,6 +31,31 @@
                         </p>
                     </a>
                 </li>
+                @if($user->role ==1)
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-copy"></i>
+                        <p>
+                            User
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{route('seller.index')}}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Sellers</p>
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a href="{{route('user.index')}}" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Visitors</p>
+                                </a>
+                            </li>
+                    </ul>
+                </li>
+                @endif
                 <li class="nav-item">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-copy"></i>

@@ -28,3 +28,5 @@ Route::get('/request/subcategory', 'SubCatgeoryController@index2')->name('reques
 Route::resource('/product','ProductController');
 Route::post('/fetchmaincategory', 'ProductController@fetchmaincategory')->name('fetchmaincategory');
 Route::get('/discount/product', 'ProductController@index2')->name('discount.product');
+Route::get('/user/sellers','UserController@index')->name('seller.index');
+Route::get('/user/visitor','UserController@index2')->name('user.index');

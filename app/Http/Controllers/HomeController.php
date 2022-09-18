@@ -7,6 +7,7 @@ use App\Product;
 use App\SubCatgeory;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -27,12 +28,25 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $data['category'] = Category::where('status','=',0)->count();
-        $data['subcategory'] = SubCatgeory::where('status','=',0)->count();
-        $data['seller'] = User::where('role','=',2)->count();
-        $data['customer'] = User::where('role','=',3)->count();
-        $data['fproduct'] = Product::where('status','=',0)->where('method','=',1)->count();
-        $data['dproduct'] = Product::where('status','=',0)->where('method','=',2)->count();
+        $user = Auth::user();
+        if ($user->role ==1)
+        {
+            $data['category'] = Category::where('status','=',0)->count();
+            $data['subcategory'] = SubCatgeory::where('status','=',0)->count();
+            $data['seller'] = User::where('role','=',2)->count();
+            $data['customer'] = User::where('role','=',3)->count();
+            $data['fproduct'] = Product::where('status','=',0)->where('method','=',1)->count();
+            $data['dproduct'] = Product::where('status','=',0)->where('method','=',2)->count();
+        }
+        else{
+            $data['category'] = Category::where('status','=',0)->where('user_id','=', 1)->orwhere('user_id' ,'=', $user->id)->count();
+            $data['subcategory'] = SubCatgeory::where('status','=',0)->where('user_id','=', 1)->orwhere('user_id' ,'=', $user->id)->count();
+            $data['seller'] = User::where('role','=',2)->count();
+            $data['customer'] = User::where('role','=',3)->count();
+            $data['fproduct'] = Product::where('status','=',0)->where('method','=',1)->count();
+            $data['dproduct'] = Product::where('status','=',0)->where('method','=',2)->count();
+        }
+
 
         return view('admin.index',compact('data'));
     }
