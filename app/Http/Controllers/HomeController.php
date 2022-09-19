@@ -39,10 +39,8 @@ class HomeController extends Controller
             $data['dproduct'] = Product::where('status','=',0)->where('method','=',2)->count();
         }
         else{
-            $data['category'] = Category::where('status','=',0)->where('user_id','=', 1)->orwhere('user_id' ,'=', $user->id)->count();
-            $data['subcategory'] = SubCatgeory::where('status','=',0)->where('user_id','=', 1)->orwhere('user_id' ,'=', $user->id)->count();
-            $data['seller'] = User::where('role','=',2)->count();
-            $data['customer'] = User::where('role','=',3)->count();
+            $data['category'] = Category::where('status','=',0)->where('user_id' ,'=', $user->id)->orwhere('user_id','=', 1)->count();
+            $data['subcategory'] = SubCatgeory::where('status','=',0)->orwhere('user_id' ,'=', $user->id)->orwhere('user_id','=', 1)->count();
             $data['fproduct'] = Product::where('status','=',0)->where('method','=',1)->count();
             $data['dproduct'] = Product::where('status','=',0)->where('method','=',2)->count();
         }
