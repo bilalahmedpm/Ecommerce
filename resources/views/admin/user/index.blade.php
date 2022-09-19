@@ -21,6 +21,7 @@
                                     <th>Email</th>
                                     <th>Phone No</th>
                                     <th>Role</th>
+                                    <th>Actions</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -30,7 +31,24 @@
                                         <td>{{$row->name}}</td>
                                         <td>{{$row->email}}</td>
                                         <td>{{$row->phone}}</td>
-                                        <td>{{$row->role}}</td>
+                                        <td>
+                                            @if($row->role ==1)
+                                            Admin
+                                            @elseif($row->role==2)
+                                            Seller
+                                            @elseif($row->role ==3)
+                                            Visitor
+                                            @endif
+                                        </td>
+                                        <td>
+                                            <a class="btn btn-sm btn-danger" >
+                                                <i class="fa fa-user-lock"></i>  Block
+                                            </a>
+
+                                            <a class="btn btn-sm btn-warning" >
+                                                <i class="fa fa-user-check"></i>  Unblock
+                                            </a>
+                                        </td>
 
                                     </tr>
                                 @endforeach
