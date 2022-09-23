@@ -1,5 +1,8 @@
 <?php
 
+use App\Category;
+use App\Product;
+use App\SubCatgeory;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,9 +17,15 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('auth.login');
+    $user = Auth::user();
+    $category = Category::where('status','=',0)->latest()->get();
+    $subcategory = SubCatgeory::where('status','=',0)->latest()->get();
+    $product = Product::where('status','=',0)->latest()->get();
+
+    return view('front.index',compact('category','product','subcategory','user'));
 });
 
+Route::get('front/index','FrontController@index')->name('front.index');
 Auth::routes();
 
 
