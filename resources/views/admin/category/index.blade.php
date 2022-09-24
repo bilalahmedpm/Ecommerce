@@ -22,8 +22,10 @@
                                 <tr>
                                     <th>Id</th>
                                     <th>Name</th>
+                                    <th>Product</th>
                                     <th>Image</th>
                                     <th>Status</th>
+
                                     <th>Created User</th>
                                     <th>Action</th>
                                 </tr>
@@ -33,6 +35,11 @@
                                     <tr>
                                         <td>{{$row->id}}</td>
                                         <td>{{$row->name}}</td>
+                                        <td>
+                                            @foreach($row->product as $key=>$row1)
+                                           {{$key+1}}: {{  $row1->title  ?? ''}}<br>
+                                            @endforeach
+                                        </td>
                                         <td>
                                             <img style="width:60px; border-radius:20px; " src="{{asset($row->img)}}"
                                                  alt="">
