@@ -17,9 +17,25 @@
     <link rel="stylesheet" type="text/css" href="{{asset('web/assets/css/colors/blue.css')}}" media="all" />
 
     <link href="https://fonts.googleapis.com/css?family=Rubik:300,400,500,900" rel="stylesheet">
-    <link rel="shortcut icon" href="{{asset('web/')}}assets/images/fav-icon.png">
+    <link rel="shortcut icon" href="{{asset('web/assets/images/fav-icon.png')}}">
+    <style>
+
+        .site-header .site-branding {
+            margin-bottom: 1.533em;
+            margin-top: -10px;
+        }
+        @media (min-width: 1200px)
+            .page-template-template-homepage-v1 .header-v1 .departments-menu > .dropdown-menu, .page-template-template-homepage-v1 .header-v3 .departments-menu > .dropdown-menu, .page-template-template-homepage-v1 .header-v4 .departments-menu > .dropdown-menu, .page-template-template-homepage-v1 .header-v5 .departments-menu > .dropdown-menu, .page-template-template-homepage-v1 .header-v6 .departments-menu > .dropdown-menu, .page-template-template-homepage-v2 .header-v1 .departments-menu > .dropdown-menu, .page-template-template-homepage-v2 .header-v3 .departments-menu > .dropdown-menu, .page-template-template-homepage-v2 .header-v4 .departments-menu > .dropdown-menu, .page-template-template-homepage-v2 .header-v5 .departments-menu > .dropdown-menu, .page-template-template-homepage-v2 .header-v6 .departments-menu > .dropdown-menu, .page-template-template-homepage-v5 .header-v1 .departments-menu > .dropdown-menu, .page-template-template-homepage-v5 .header-v3 .departments-menu > .dropdown-menu, .page-template-template-homepage-v5 .header-v4 .departments-menu > .dropdown-menu, .page-template-template-homepage-v6 .header-v1 .departments-menu > .dropdown-menu, .page-template-template-homepage-v6 .header-v4 .departments-menu > .dropdown-menu, .page-template-template-homepage-v6 .header-v3 .departments-menu > .dropdown-menu, .page-template-template-homepage-v5 .header-v5 .departments-menu > .dropdown-menu, .page-template-template-homepage-v5 .header-v6 .departments-menu > .dropdown-menu, .page-template-template-homepage-v6 .header-v5 .departments-menu > .dropdown-menu, .page-template-template-homepage-v6 .header-v6 .departments-menu > .dropdown-menu {
+                display: none!important;
+            }
+    </style>
 </head>
-<body class="woocommerce-active page-template-template-homepage-v1 can-uppercase">
+@if(request()->is('product/single/*') )
+    <body class="woocommerce-active single-product full-width normal">
+    @else
+        <body class="woocommerce-active page-template-template-homepage-v1 can-uppercase">
+        @endif
+<?php $category = \App\Category::where('status','=',0)->get();?>
 <div id="page" class="hfeed site">
     <div class="top-bar top-bar-v1">
         <div class="col-full">
@@ -362,20 +378,22 @@
             </div>
             <!-- .techmarket-sticky-wrap -->
             <div class="row align-items-center">
+
                 <div id="departments-menu" class="dropdown departments-menu">
                     <button class="btn dropdown-toggle btn-block" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="tm tm-departments-thin"></i>
                         <span>All Departments</span>
                     </button>
+                    @if(request()->is( '/') )
                     <ul id="menu-departments-menu" class="dropdown-menu yamm departments-menu-dropdown">
                         <li class="highlight menu-item animate-dropdown">
-                            <a title="Value of the Day" href="home-v2.html">Value of the Day</a>
+                            <a title="Value of the Day" href="#">Value of the Day</a>
                         </li>
                         <li class="highlight menu-item animate-dropdown">
-                            <a title="Top 100 Offers" href="home-v3.html">Top 100 Offers</a>
+                            <a title="Top 100 Offers" href="#">Top 100 Offers</a>
                         </li>
                         <li class="highlight menu-item animate-dropdown">
-                            <a title="New Arrivals" href="home-v4.html">New Arrivals</a>
+                            <a title="New Arrivals" href="#">New Arrivals</a>
                         </li>
                         @foreach($category as $row)
                         <li class="yamm-tfw menu-item menu-item-has-children animate-dropdown dropdown-submenu">
@@ -424,43 +442,22 @@
                                             </div>
                                             <!-- .kc_column -->
                                         </div>
+
                                         <!-- .kc_row -->
                                     </div>
                                     <!-- .yamm-content -->
                                 </li>
+
                             </ul>
                         </li>
                         @endforeach
 
                     </ul>
-                </div>
-                <!-- .departments-menu -->
-                <form class="navbar-search" method="get" action="home-v1.html">
-                    <label class="sr-only screen-reader-text" for="search">Search for:</label>
-                    <div class="input-group">
-                        <input type="text" id="search" class="form-control search-field product-search-field" dir="ltr" value="" name="s" placeholder="Search for products" />
-                        <div class="input-group-addon search-categories popover-header">
-                            <select name='product_cat' id='product_cat' class='postform resizeselect'>
-                                <option value='0' selected='selected'>All Categories</option>
-                                <?php $category = \App\Category::where('status','=',0)->get();?>
-                                @foreach($category as $row)
-                                    <option class="level-0" value="{{$row->id}}">{{$row->name}}</option>
-                                @endforeach
+                    @else
+                    @endif
 
-                            </select>
-                        </div>
-                        <!-- .input-group-addon -->
-                        <div class="input-group-btn input-group-append">
-                            <input type="hidden" id="search-param" name="post_type" value="product" />
-                            <button type="submit" class="btn btn-primary">
-                                <i class="fa fa-search"></i>
-                                <span class="search-btn">Search</span>
-                            </button>
-                        </div>
-                        <!-- .input-group-btn -->
-                    </div>
-                    <!-- .input-group -->
-                </form>
+                </div>
+
                 <!-- .navbar-search -->
                 <ul class="header-compare nav navbar-nav">
                     <li class="nav-item">
@@ -1405,9 +1402,8 @@
         </div>
         <!-- .col-full -->
     </footer>
-    <!-- .site-footer -->
-</div>
 
+</div>
 <script type="text/javascript" src="{{asset('web/assets/js/jquery.min.js')}}"></script>
 <script type="text/javascript" src="{{asset('web/assets/js/tether.min.js')}}"></script>
 <script type="text/javascript" src="{{asset('web/assets/js/bootstrap.min.js')}}"></script>
@@ -1422,6 +1418,6 @@
 <script type="text/javascript" src="{{asset('web/assets/js/pace.min.js')}}"></script>
 <script type="text/javascript" src="{{asset('web/assets/js/slick.min.js')}}"></script>
 <script type="text/javascript" src="{{asset('web/assets/js/scripts.js')}}"></script>
-
 </body>
+
 </html>

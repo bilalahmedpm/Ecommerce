@@ -27,6 +27,9 @@ Route::get('/', function () {
 
 Route::get('front/index','FrontController@index')->name('front.index');
 Route::get('product/single/{id}','FrontController@singleProduct')->name('product.single');
+Route::post('/add/cart','Front\ProductController@addCart')->name('add.cart');
+Route::get('/cart', 'Front\ProductController@cart')->name('cart');
+Route::get('/remove/cart/{id}', 'Front\ProductController@removeCart')->name('remove.cart');
 Auth::routes();
 
 

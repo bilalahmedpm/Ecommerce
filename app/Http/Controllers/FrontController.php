@@ -18,4 +18,10 @@ class FrontController extends Controller
 
         return view('front.index',compact('category','product','subcategory','user'));
     }
+    public function singleProduct($id)
+    {
+        $product = Product::find($id);
+        $products = Product::where('status','=',0)->latest()->get();
+        return view('front.product.single',compact('product','products'));
+    }
 }
